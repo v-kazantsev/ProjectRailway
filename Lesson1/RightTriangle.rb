@@ -1,20 +1,44 @@
-puts "Enter first side lenght"
+puts "Укажите длину первой стороны"
 a = gets.chomp.to_f
-puts "Enter second side length"
+puts "Укажите длину второй стороны"
 b = gets.chomp.to_f
-puts "Enter third side lenght"
+puts "Укажите длину третей стороны"
 c = gets.chomp.to_f
-if a > b && a > c && a**2 == b**2 + c**2
-		puts "This is a right-angled triangle"
-		puts "This is an isosceles triangle" if a == b || a == c || b == c
-elsif b > a && b > c && b**2 == a**2 + c**2
-		puts "This is a right-angled triangle"
-		puts "This ia an isosceles triangle" if a == b || a == c || b == c
-elsif c > a && c > b && c**2 == a**2 + b**2
-		puts "This is a right-angled triangle"
-		puts "This ia an isosceles triangle" if a == b || a == c || b == c
-elsif a == b && a == c
-	puts "This is an isosceles and equilateral but not right-angled triangle"
+if a > b && a > c
+  hypotenuse = a
+  cathetus1 = b
+  cathetus2 = c
+elsif b > a && b > c
+  hypotenuse = b
+  cathetus1 = a
+  cathetus2 = c
 else 
-	puts "This is not a right-angled triangle"
+  hypotenuse = c
+  cathetus1 = a
+  cathetus2 = b
 end
+if (hypotenuse**2 == cathetus1**2 + cathetus2**2) && (cathetus1 == cathetus2)
+  puts "Это равнобедренный прямоугольный треугольник"
+elsif hypotenuse**2 == cathetus1**2 + cathetus2**2
+  puts "Это прямоугольный треугольник"
+elsif a == b && a == c
+  puts "Это равносторонний не прямоугольный треугольник"
+else
+  puts "Это не прямоугольный треугольник"
+end
+
+    
+    
+
+      
+    
+    
+    
+
+
+    
+    
+
+
+    
+
