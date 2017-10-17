@@ -7,17 +7,17 @@ class Station
   end
   attr_accessor :trains_currently_in
   def train_in(train, type) #принимает поезд, добавляет его название в список поездов,
-    train_name = train      #увеличивает на единицу количество грузовых или пассажирских поездов
-    train_type = type       #и увеличивает счетчик количества поездов на единицу
-    @train_list << train_name
-    @train_type_list[train_type] +=1
+          #увеличивает на единицу количество грузовых или пассажирских поездов
+          #и увеличивает счетчик количества поездов на единицу
+    @train_list << train
+    @train_type_list[type] +=1
     self.trains_currently_in += 1
   end
   def train_out(train, type) #отправляет поезд, удаляет его название из списка,
-    train_name = train       #уменьшает количество грузовых или пассажирских поездов  
-    train_type = type        #и уменьшает счетчик поездов на единицу
-    @train_list.delete(train_name)
-    @train_type_list[train_type] -= 1
+           #уменьшает количество грузовых или пассажирских поездов  
+          #и уменьшает счетчик поездов на единицу
+    @train_list.delete(train)
+    @train_type_list[type] -= 1
     self.trains_currently_in -= 1 
   end
   def train_list             #выводит поименный список находящихся на станции поездов
