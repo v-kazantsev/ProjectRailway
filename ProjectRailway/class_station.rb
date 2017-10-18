@@ -1,26 +1,30 @@
 class Station
+  require_relative "class_train"
+
+  attr_accessor :train_list
+
   def initialize(name)       #создает станцию с заданным в аргументе именем
     @name = name
-    @trains_currently_in = 0 #поездов на станции нет
-    @train_list = []        
-    @train_type_list = {passenger: 0, cargo: 0} 
+    @train_list = [] 
+    @cargo_train = 0
+    @passenger_train = 0    
   end
-  attr_accessor :trains_currently_in
-  def train_in(train, type).     #принимает поезд, добавляет его название в список поездов,
-    @train_list << train         #увеличивает на единицу количество грузовых или пассажирских поездов
-    @train_type_list[type] +=1   #и увеличивает счетчик количества поездов на единицу
-    self.trains_currently_in += 1
+
+  def train_in(train)       #принимает поезд (объект класса Поезд)
+    self.train_list << train          
   end
-  def train_out(train, type)     #отправляет поезд, удаляет его название из списка,
-    @train_list.delete(train)    #уменьшает количество грузовых или пассажирских поездов  
-    @train_type_list[type] -= 1  #и уменьшает счетчик поездов на единицу
-    self.trains_currently_in -= 1 
+
+  def train_out(train)     
+    train_list.delete(train)     
   end
-  def train_list             #выводит поименный список находящихся на станции поездов
-    puts @train_list
+
+  def train_type_list(type)             
+    train_list.each do |t|
+      if t.type == :cargo
+      @cargo_train += 1 
+      else @passenger_train += 1 
+      end
+    end
   end
-  def train_type_list        #выводит количество находящихся на станции грузовых или       
-    puts self.trains_currently_in == 0? "Сейчас поездов нет" : #пассажирских поездов
-    "Сейчас поездов на станции: #{@train_type_list}"   
-  end
+
 end

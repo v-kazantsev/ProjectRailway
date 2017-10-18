@@ -1,18 +1,17 @@
 class Route
+  require_relative "class_station"
+  attr_accessor :stations
+
   def initialize(start,finish)
-    @start = start
-    @finish = finish
-    @route = [@start,@finish]
+    @stations = [start,finish]
   end
-  attr_accessor :name, :route
-  def add_station(name)
-    self.route.insert(-2, name)
+
+  def add_station(station)           #передаем объект Станция
+    self.stations.insert(-2, station)
   end
-  def remove_station(name)
-    self.route.delete(name)
-  end
-  def route_list
-    puts route
+
+  def remove_station(station)
+    self.stations.delete(station)
   end
 end
 
