@@ -17,9 +17,7 @@ class Station
   end
 
   def train_type_list(type)             
-    cargo_trains = trains.count { |t| t.type == :cargo }
-    passenger_trains = trains.count { |t| t.type == :passenger }
-    return cargo_trains, passenger_trains
+    trains.count { |t| t.type == type }
   end
 
 end
