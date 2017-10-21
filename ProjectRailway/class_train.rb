@@ -1,31 +1,34 @@
 class Train
   require_relative "class_route"
+  require_relative "class_wagon"
 
-  attr_reader :current_route
+  attr_accessor :current_route, :current_station_index
+  attr_reader   :number, :wagons
 
-  def initialize (number, type, qtty)
-    @number = number                        #номер поезда
-    @type = type                            #тип поезда
-    @qtty = qtty                            #количество вагонов
-    @speed = 0                              #поезд стоит
-    @current_station_index = 0              #индекс текущей станции
-  end
 
-  def take_route(route)   #передаем объект класса Маршрут
-    self.current_route = route  
-    current_station.train_in(self)
-  end
-
-  def speed_up
-    @speed += 50
-  end
-
-  def stop
+  def initialize (number)
+    @number = number                           
+    @wagons = []                            
     @speed = 0
+    @current_route = []                              
+    @current_station_index = 0            
   end
 
   def current_station                  #возвращает текущую станцию
-    current_route.stations[@current_station_index]
+    current_route.stations[current_station_index]
+  end
+
+  def take_route(route)   
+    self.current_route = route  
+    current_station.train_in(self)  
+  end
+
+  def add_wagon(wagon)
+    @wagons << wagon  if @speed.zero? && self.type == wagon.type 
+  end
+
+  def remove_wagon(wagon)
+    @wagons.delete_at(0) if @speed.zero? && !wagons.empty?    
   end
 
   def move_forward
@@ -33,7 +36,7 @@ class Train
       current_station.train_out(self)
       speed_up
       stop
-      @current_station_index += 1
+      self.current_station_index += 1
       current_station.train_in(self)
     end
   end
@@ -43,20 +46,35 @@ class Train
       current_station.train_out(self)
       speed_up
       stop
-      @current_station_index -= 1
+      self.current_station_index -= 1
       current_station.train_in(self)
     end
   end
 
+protected #ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ СУБКЛАССОВ
+          #ВСЕ ОСТАЛЬНЫЕ МЕТОДЫ ВЫЗЫВАЮТСЯ ИЗВНЕ МЕТОДА TRAIN И ЕГО СУБКЛАССОВ
+  
+  def speed_up
+    @speed += 50
+  end
+
+  def stop
+    @speed = 0
+  end
+
   def report_previous
-    current_route.stations[@current_station_index-1]
+    current_route.stations[current_station_index-1]
   end
 
   def report_next
-    current_route.stations[@current_station_index+1]
+    current_route.stations[current_station_index+1]
   end
 
 end
+
+
+
+
 
 
 

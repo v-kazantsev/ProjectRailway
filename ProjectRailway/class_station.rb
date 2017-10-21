@@ -2,13 +2,15 @@ class Station
   require_relative "class_train"
 
   attr_accessor :trains 
+  attr_reader :name
 
-  def initialize(name)       #создает станцию с заданным в аргументе именем
+
+  def initialize(name)       
     @name = name
     @trains = []    
   end
 
-  def train_in(train)       #принимает поезд (объект класса Поезд)
+  def train_in(train)       
     self.trains << train          
   end
 
