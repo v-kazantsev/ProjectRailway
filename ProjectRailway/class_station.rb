@@ -1,6 +1,6 @@
+require_relative "class_train"
 class Station
-  require_relative "class_train"
-
+  
   attr_accessor :trains 
   attr_reader :name
 

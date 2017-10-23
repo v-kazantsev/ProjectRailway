@@ -1,6 +1,5 @@
+require_relative "class_station"
 class Route
-  require_relative "class_station"
-  
   attr_reader :stations
 
   def initialize(start,finish)

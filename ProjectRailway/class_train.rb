@@ -1,7 +1,7 @@
+require_relative "class_route"
+require_relative "class_wagon"
 class Train
-  require_relative "class_route"
-  require_relative "class_wagon"
-
+  
   attr_accessor :current_route, :current_station_index
   attr_reader   :number, :wagons
 
@@ -11,7 +11,7 @@ class Train
     @wagons = []                            
     @speed = 0
     @current_route = []                              
-    @current_station_index = 0            
+    @current_station_index = 0           
   end
 
   def current_station                  #возвращает текущую станцию
