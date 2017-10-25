@@ -1,20 +1,29 @@
 require_relative "class_route"
 require_relative "class_wagon"
+require_relative "module"
 class Train
   
   attr_accessor :current_route, :current_station_index
   attr_reader   :number, :wagons
 
+  include Maker
+
+  @@all_trains = []
+
+  def self.find(train_number)
+    @@all_trains.detect { |x| x.number == train_number }
+  end
 
   def initialize (number)
     @number = number                           
     @wagons = []                            
     @speed = 0
     @current_route = []                              
-    @current_station_index = 0           
+    @current_station_index = 0
+    @@all_trains << self           
   end
 
-  def current_station                  #возвращает текущую станцию
+  def current_station                  
     current_route.stations[current_station_index]
   end
 

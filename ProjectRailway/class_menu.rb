@@ -1,15 +1,19 @@
+require_relative 'class_train'
+require_relative 'class_station'
+require_relative 'class_route'
+
 class Menu
 
   def initialize
-    @all_stations = []
-    @all_trains = []
+   @all_stations = []
+  #  @all_trains = []
   end
 
   def create_station
     puts "ВВЕДИТЕ ИМЯ СТАНЦИИ"
     station_name = gets.chomp.upcase
-    @station = Station.new(station_name)
-    @all_stations << @station 
+    @station = Station.new(station_name) 
+    @all_stations << @station
     puts "СТАНЦИЯ #{station_name} СОЗДАНА"
   end
 
@@ -22,13 +26,11 @@ class Menu
     train_type = gets.chomp
     if train_type == "1" 
       @train = CargoTrain.new(train_number)
-      @all_trains << @train 
       @route_assigned = false
       puts "СОЗДАН ГРУЗОВОЙ ПОЕЗД #{train_number}"
     else
       puts "СОЗДАН ПАССАЖИРСКИЙ ПОЕЗД #{train_number}"
       @train = PassengerTrain.new(train_number)
-      @all_trains << @train 
       @route_assigned = false
     end
   end
@@ -37,9 +39,9 @@ class Menu
     @all_stations.detect { |x| x.name == str }
   end
 
-  def get_train_by_number(str)
-    @all_trains.detect{ |x| x.number == str }
-  end
+  #def get_train_by_number(str)
+  #  @all_trains.detect{ |x| x.number == str }
+  #end
     
   def create_route
     puts "ВВЕДИТЕ НАЧАЛЬНУЮ СТАНЦИЮ МАРШРУТА"
@@ -77,7 +79,7 @@ class Menu
     if @route_created
       puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
       train_number = gets.chomp
-      find_train = get_train_by_number(train_number)
+      find_train = Train.find(train_number)
       find_train.take_route(@route)
       @route_assigned = true
       puts "МАРШРУТ НАЗНАЧЕН"
@@ -107,21 +109,21 @@ class Menu
   def move_train_forward
     puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
     train_number = gets.chomp
-    find_train = get_train_by_number(train_number)
+    find_train = Train.find(train_number)
     find_train.move_forward
   end
 
   def move_train_back
     puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
     train_number = gets.chomp
-    find_train = get_train_by_number(train_number)
+    find_train = Train.find(train_number)
     find_train.move_back
   end
 
   def put_trains_info
     puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
     train_number = gets.chomp
-    find_train = get_train_by_number(train_number)
+    find_train = Train.find(train_number)
     unless @route_assigned
       puts "СНАЧАЛА НАДО НАЗНАЧИТЬ МАРШРУТ"
     else

@@ -4,10 +4,16 @@ class Station
   attr_accessor :trains 
   attr_reader :name
 
+  @@all_stations = []
+
+  def self.all                                     #У МЕНЯ РЕАЛИЗОВАН ВЫВОД ИНФОРМАЦИИ ПО СТАНЦИЯМ ЧЕРЕЗ ИНСТАНС
+    @@all_stations.detect { |x| puts "#{x.name}" } #МЕТОД. В ЗАДАНИИ НЕ СКАЗАНО РЕАЛИЗОВАТЬ МЕТОД ALL ПОЭТОМУ ПОКА
+  end                                              #ОСТАВИЛ СВОЙ МЕТОД
 
   def initialize(name)       
     @name = name
-    @trains = []    
+    @trains = []
+    @@all_stations << self    
   end
 
   def train_in(train)       
