@@ -9,8 +9,8 @@ end
 
 test = Test.new
 
-Test.instances #=> 1
+puts Test.instances #=> 1
 
 test2 = Test.new
 
-Test.instances #=> 2
+puts Test.instances #=> 2
