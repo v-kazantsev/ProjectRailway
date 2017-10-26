@@ -8,10 +8,10 @@ class Train
 
   include Maker
 
-  @@all_trains = []
+  @@all_trains = {}
 
   def self.find(train_number)
-    @@all_trains.detect { |x| x.number == train_number }
+    @@all_trains[train_number] if @@all_trains.include? train_number
   end
 
   def initialize (number)
@@ -20,7 +20,7 @@ class Train
     @speed = 0
     @current_route = []                              
     @current_station_index = 0
-    @@all_trains << self           
+    @@all_trains[number] = self         
   end
 
   def current_station                  
