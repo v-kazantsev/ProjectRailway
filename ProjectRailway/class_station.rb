@@ -6,9 +6,9 @@ class Station
 
   @@all_stations = []
 
-  def self.all                                     #У МЕНЯ РЕАЛИЗОВАН ВЫВОД ИНФОРМАЦИИ ПО СТАНЦИЯМ ЧЕРЕЗ ИНСТАНС
-    @@all_stations.detect { |x| puts "#{x.name}" } #МЕТОД. В ЗАДАНИИ НЕ СКАЗАНО РЕАЛИЗОВАТЬ МЕТОД ALL ПОЭТОМУ ПОКА
-  end                                              #ОСТАВИЛ СВОЙ МЕТОД
+  def self.all                                     
+    @@all_stations.each { |x| puts "#{x}" } 
+  end                                             
 
   def initialize(name)       
     @name = name
