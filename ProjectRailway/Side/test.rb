@@ -1,5 +1,5 @@
-require 'test_module'
-class Dog
+require_relative 'test_module'
+class Test
   @@instances = 0
   class << self
     def instances
@@ -17,3 +17,7 @@ class Dog
   end
 
 end
+
+
+
+

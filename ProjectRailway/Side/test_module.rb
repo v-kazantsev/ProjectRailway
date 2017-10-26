@@ -2,7 +2,7 @@ module InstanceCounter
   module ClassMethods
 
     def instances
-      puts @@instances
+      @@instances
     end
 
   end 
@@ -11,11 +11,8 @@ module InstanceCounter
     
     protected
     def register_instance
-      instances += 1
+      self.class.instances += 1
     end
   
   end
 end
-
-
-
