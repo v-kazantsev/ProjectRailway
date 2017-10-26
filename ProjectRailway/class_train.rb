@@ -11,7 +11,7 @@ class Train
   @@all_trains = {}
 
   def self.find(train_number)
-    @@all_trains[train_number] if @@all_trains.include? train_number
+    @@all_trains[train_number] 
   end
 
   def initialize (number)
