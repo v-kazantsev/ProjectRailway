@@ -7,20 +7,32 @@ class Train
   attr_reader   :number, :wagons
 
   include Maker
+  include Valide
 
   @@all_trains = {}
-
+  
   def self.find(train_number)
     @@all_trains[train_number] 
   end
 
+  def validate!
+    raise RuntimeError, "Неверный формат номера" if @number.length < 5
+    raise RuntimeError, "Число вагонов меньше 0" if @wagons.size < 0
+    raise RuntimeError, "Скорость меньше 0" if @speed < 0
+    raise RuntimeError, "Маршрут не создан" if @current_route.size < 0
+    raise RuntimeError, "Индекс текущей станции меньше 0" if @current_station_index < 0
+    raise RuntimeError, "Объект не создан" if @@all_trains[number].nil?
+    true 
+  end
+
   def initialize (number)
-    @number = number                           
+    @number = number                          
     @wagons = []                            
     @speed = 0
     @current_route = []                              
     @current_station_index = 0
-    @@all_trains[number] = self         
+    @@all_trains[number] = self 
+    validate!        
   end
 
   def current_station                  

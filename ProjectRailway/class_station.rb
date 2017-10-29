@@ -1,5 +1,7 @@
 require_relative "class_train"
+require_relative "module"
 class Station
+  include Valide
   
   attr_accessor :trains 
   attr_reader :name
@@ -8,12 +10,18 @@ class Station
 
   def self.all                                     
     @@all_stations
-  end                                             
+  end 
+
+  def validate!
+    raise 'Неверное имя станции' if name !~ /\w+/
+    true
+  end                                            
 
   def initialize(name)       
     @name = name
+    validate! 
     @trains = []
-    @@all_stations << self    
+    @@all_stations << self
   end
 
   def train_in(train)       
