@@ -1,52 +1,87 @@
+require_relative 'class_station' 
+require_relative 'class_train'
+require_relative 'class_route'
+require_relative 'class_cargo_train'
+require_relative 'class_passenger_train'
+require_relative 'class_wagon'
 require_relative 'class_menu'
 
 menu = Menu.new
 
-choice = '0'
-until choice == '14' do 
-puts "[1] СОЗДАТЬ ПОЕЗД"
-puts "[2] СОЗДАТЬ СТАНЦИЮ"
-puts "[3] СОЗДАТЬ МАРШРУТ"
-puts "[4] НАЗНАЧИТЬ МАРШРУТ ПОЕЗДУ"
-puts "[5] ДОБАВИТЬ ВАГОНЫ"
-puts "[6] УБРАТЬ ВАГОНЫ"
-puts "[7] ДОБАВИТЬ СТАНЦИЮ"
-puts "[8] УБРАТЬ СТАНЦИЮ"
-puts "[9] ПЕРЕМЕСТИТЬ ПОЕЗД ВПЕРЕД"
-puts "[10] ПЕРЕМЕСТИТЬ ПОЕЗД НАЗАД"
-puts "[11] ОТЧЕТ О СТАНЦИЯХ"
-puts "[12] ОТЧЕТ О ПОЕЗДАХ"
-puts "[13] ОТЧЕТ О МАРШРУТАХ"
-puts "[14] ВЫХОД"
-choice = gets.chomp
-case choice
-  when '1'
-    menu.create_train
-  when '2'
+choice = "0"
+until choice == "5" do
+
+  puts "ВЫБЕРИТЕ ДЕЙСТВИЕ:"
+  puts "[1] СОЗДАТЬ СТАНЦИЮ"
+  puts "[2] СОЗДАТЬ ПОЕЗД"
+  puts "[3] СОЗДАТЬ МАРШРУТ"
+  puts "[4] УПРАВЛЯТЬ СОЗДАННЫМИ ОБЪЕКТАМИ"
+  puts "[5] ВЫХОД"
+  choice = gets.chomp
+
+  case choice
+    when "1"
+
     menu.create_station
-  when '3'
+  
+    when "2" 
+
+    menu.create_train
+
+    when "3" 
+
     menu.create_route
-  when '4'
-    menu.assign_route
-  when '5'
-    menu.add_wagons
-  when '6'
-    menu.remove_wagons
-  when '7'
-    menu.add_station
-  when '8'
-    menu.remove_station
-  when '9'
-    menu.move_forward
-  when '10'
-    menu.move_back
-  when '11'
-    menu.stations_info
-  when '12'
-    menu.trains_info
-  when '13'
-    menu.routes_info
-end
-end
 
+    when "4"
 
+    puts "[1] ДОБАВИТЬ СТАНЦИЮ В  МАРШРУТ"
+    puts "[2] УБРАТЬ СТАНЦИЮ ИЗ МАРШРУТА"
+    puts "[3] НАЗНАЧИТЬ МАРШРУТ ПОЕЗДУ"
+    puts "[4] ДОБАВИТЬ ВАГОНЫ"
+    puts "[5] УБРАТЬ ВАГОНЫ"
+    puts "[6] ПЕРЕМЕСТИТЬ ПОЕЗД ВПЕРЕД"
+    puts "[7] ПЕРЕМЕСТИТЬ ПОЕЗД НАЗАД"
+    puts "[8] ВЫВЕСТИ ИНФОРМАЦИЮ О ПОЕЗДАХ"
+    puts "[9] ВЫВЕСТИ ИНФОРМАЦИЮ О СТАНЦИЯХ"
+
+    choice1 = gets.chomp
+
+    case choice1
+      when "1"
+
+      menu.add_station_to_route
+
+      when "2"
+      
+      menu.remove_station_from_route
+
+      when "3"
+
+      menu.assign_route
+      
+      when "4"
+
+      menu.add_wagon_by_type
+      
+      when "5"
+      
+      menu.remove_wagon
+
+      when "6"
+
+      menu.move_train_forward
+      
+      when "7"
+
+      menu.move_train_back
+      
+      when "8"
+
+      menu.put_trains_info
+      
+      when "9"
+
+      menu.put_stations_info  
+    end
+  end
+end
