@@ -14,7 +14,7 @@ class Train
 
   def initialize (number)
     @number = number
-    valid?             
+    validate!           
     @wagons = []                            
     @speed = 0
     @current_route = []                              
@@ -84,9 +84,16 @@ protected #ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ С
 
   private 
 
-  def valid?
+  def validate!
     raise RuntimeError.new('НЕПРАВИЛЬНЫЙ ФОРМАТ НОМЕРА') unless NUMBER_FORMAT.match(number)
-    true 
+  end
+
+  def valid?
+    validate!
+    true
+    rescue => e
+    puts "#{e.message}"
+    false
   end
 end
 

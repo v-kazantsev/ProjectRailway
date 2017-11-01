@@ -11,7 +11,7 @@ class Station
                                      
   def initialize(name)       
     @name = name
-    valid?
+    validate!
     @trains = []
     @@all_stations << self
   end
@@ -34,8 +34,15 @@ class Station
 
   private
 
-  def valid?
+  def validate!
     raise 'НЕВЕРНОЕ ИМЯ СТАНЦИИ' unless NAME_FORMAT.match(name)
+  end  
+
+  def valid?
+    validate!
     true
-  end    
+    rescue => e
+    puts "#{e.message}"
+    false
+  end  
 end
