@@ -3,19 +3,15 @@ require_relative 'module'
 
 class Station
 
-  include Valide
-  
   attr_accessor :trains 
   attr_reader :name
 
   @@all_stations = []
   NAME_FORMAT = /[a-zа-я]+/i 
-
-                                          
-
+                                     
   def initialize(name)       
     @name = name
-    return unless validate! 
+    valid?
     @trains = []
     @@all_stations << self
   end
@@ -38,11 +34,8 @@ class Station
 
   private
 
-  def validate!
-    raise 'НЕВЕРНОЕ ИМЯ СТАНЦИИ' unless NAME_FORMAT.match(@name)
+  def valid?
+    raise 'НЕВЕРНОЕ ИМЯ СТАНЦИИ' unless NAME_FORMAT.match(name)
     true
-  rescue => e 
-    puts "#{e.message}"
-    false
   end    
 end

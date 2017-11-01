@@ -3,8 +3,6 @@ require_relative 'module'
 
 class Route
 
-  include Valide
-
   attr_reader :stations
   
   def initialize(start,finish)

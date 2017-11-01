@@ -5,7 +5,6 @@ require_relative 'module'
 class Train
 
   include Maker
-  include Valide
   
   attr_accessor :current_route, :current_station_index
   attr_reader   :number, :wagons
@@ -14,14 +13,13 @@ class Train
   @@all_trains = {}
 
   def initialize (number)
-    @number = number 
-    validate!                         
+    @number = number
+    valid?             
     @wagons = []                            
     @speed = 0
     @current_route = []                              
     @current_station_index = 0
-    @@all_trains[number] = self 
-           
+    @@all_trains[number] = self     
   end
 
   def self.find(train_number)
@@ -86,14 +84,10 @@ protected #ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ С
 
   private 
 
-  def validate!
-    raise 'НЕПРАВИЛЬНЫЙ ФОРМАТ НОМЕРА' unless NUMBER_FORMAT.match(@number)
+  def valid?
+    raise RuntimeError.new('НЕПРАВИЛЬНЫЙ ФОРМАТ НОМЕРА') unless NUMBER_FORMAT.match(number)
     true 
-  rescue => e
-    puts "#{e.message}"
-    false
   end
-
 end
 
 

@@ -5,8 +5,6 @@ require_relative 'module'
 
 class Menu
 
-  include Valide
-  
   attr_reader :train_number,  :station_name
   attr_accessor :all_stations
 
@@ -30,12 +28,27 @@ class Menu
     puts "[2] ПАССАЖИРСКИЙ"
     train_type = gets.chomp
     if train_type == "1" 
+    begin
       @train = CargoTrain.new(train_number)
+      train_created = true
+    rescue  RuntimeError => e
+      puts "#{e.message}"
+      train_created = false
+    end
+      puts "ГРУЗОВОЙ ПОЕЗД #{train_number} СОЗДАН" if train_created
       @route_assigned = false
     elsif train_type == "2"
+    begin
       @train = PassengerTrain.new(train_number)
+      train_created = true
+    rescue RuntimeError => e
+      puts "#{e.message}"
+      train_created = false
+    end
+      puts "ПАССАЖИРСКИЙ ПОЕЗД #{train_number} СОЗДАН" if train_created
       @route_assigned = false
     end
+    
   end
 
   def get_station_by_name(str)
