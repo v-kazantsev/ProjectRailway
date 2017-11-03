@@ -6,8 +6,8 @@ class Train
 
   include Maker
   
-  attr_accessor :current_route, :current_station_index
-  attr_reader   :number, :wagons
+  attr_accessor :current_route, :current_station_index, :wagons
+  attr_reader   :number
 
   NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}$/i 
   @@all_trains = {}
@@ -60,6 +60,27 @@ class Train
       stop
       self.current_station_index -= 1
       current_station.train_in(self)
+    end
+  end
+
+  def show_wagons(train_number,wagons_block)
+    for i in 0..wagons.size-1
+      each_number = i + 1
+      wagons_block.call('ВАГОН НОМЕР ' + each_number.to_s)
+      each_type = train_number.wagons[i].type
+      wagons_block.call(' ТИП: ' + each_type.to_s)
+      if train_number.type == :cargo
+        each_free_volume = train_number.wagons[i].volume_free
+        wagons_block.call(' СВОБОДНО: ' + each_free_volume.to_s)
+        each_taken_volume = train_number.wagons[i].volume_taken
+        wagons_block.call(' ЗАНЯТО : ' + each_taken_volume.to_s)
+      elsif train_number.type == :passenger
+        each_free_seats = train_number.wagons[i].seats_free
+        wagons_block.call(' СВОБОДНО: ' + each_free_seats.to_s)
+        each_taken_seats = train_number.wagons[i].seats_taken
+        wagons_block.call(' ЗАНЯТО : ' + each_taken_seats.to_s)
+      end
+      wagons_block.call("\n")
     end
   end
 
