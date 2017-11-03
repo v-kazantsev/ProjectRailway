@@ -42,7 +42,9 @@ until choice == "5" do
     puts "[6] ПЕРЕМЕСТИТЬ ПОЕЗД ВПЕРЕД"
     puts "[7] ПЕРЕМЕСТИТЬ ПОЕЗД НАЗАД"
     puts "[8] ВЫВЕСТИ ИНФОРМАЦИЮ О ПОЕЗДАХ"
-    puts "[9] ВЫВЕСТИ ИНФОРМАЦИЮ О СТАНЦИЯХ"
+    puts "[9] ВЫВЕСТИ ИНФОРМАЦИЮ О ВАГОНАХ"
+    puts "[10] ЗАПОЛНИТЬ ВАГОН"
+    puts "[11] ВЫВЕСТИ ИНФОРМАЦИЮ О СТАНЦИЯХ"
 
     choice1 = gets.chomp
 
@@ -81,7 +83,16 @@ until choice == "5" do
       
       when "9"
 
-      menu.put_stations_info  
+      menu.show_wagons
+
+      when "10"
+
+      menu.load_wagon
+
+      when "11"
+      
+      menu.show_trains
+
     end
   end
 end

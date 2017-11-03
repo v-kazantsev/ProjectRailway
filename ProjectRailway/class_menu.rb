@@ -2,6 +2,8 @@ require_relative 'class_train'
 require_relative 'class_station'
 require_relative 'class_route'
 require_relative 'module'
+require_relative 'class_cargo_wagon'
+require_relative 'class_passenger_wagon'
 
 class Menu
 
@@ -101,16 +103,21 @@ class Menu
   end
 
   def add_wagon_by_type
-    puts "[1] ДОБАВИТЬ ГРУЗОВОЙ ВАГОН"
-    puts "[2] ДОБАВИТЬ ПАССАЖИРСКИЙ ВАГОН"
-    choice = gets.chomp
-    if choice == "1"
-      @wagon = Wagon.new(:cargo)
+    puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
+    train_number = gets.chomp
+    find_train = Train.find(train_number)
+    if find_train.type == :cargo
+      puts 'ВВЕДИТЕ ОБЪЕМ ВАГОНА'
+      volume = gets.to_i
+      @wagon = CargoWagon.new(:cargo, volume)
       @train.add_wagon(@wagon)
       puts "ГРУЗОВОЙ ВАГОН ДОБАВЛЕН"
-    elsif choice == "2"
-      @wagon = Wagon.new(:passenger)
+    elsif find_train.type == :passenger
+      puts 'ВВЕДИТЕ КОЛИЧЕСТВО МЕСТ'
+      seats = gets.to_i
+      @wagon = PassengerWagon.new(:passenger,seats)
       @train.add_wagon(@wagon)
+      puts 'ПАССАЖИРСКИЙ ВАГОН ДОБАВЛЕН'
     end  
   end
 
@@ -132,6 +139,26 @@ class Menu
     find_train.move_back
   end
 
+  def load_wagon
+    puts 'ВВЕДИТЕ НОМЕР ПОЕЗДА'
+    train_number = gets.chomp
+    find_train = Train.find(train_number)
+    puts 'ВВЕДИТЕ НОМЕР ВАГОНА'
+    wagon_number = gets.to_i - 1
+    if find_train.wagons[wagon_number].nil?
+      puts 'ВАГОН ЕЩЕ НЕ СОЗДАН'
+    else
+      if find_train.type == :cargo
+        puts 'ВВЕДИТЕ ОБЪЕМ'
+        volume = gets.to_i
+        find_train.wagons[wagon_number].load(volume)
+        puts "ЗАНЯТ ОБЪЕМ #{volume}"
+      elsif find_train.type == :passenger
+        find_train.wagons[wagon_number].take_seat
+        puts 'ЗАНЯТО ОДНО МЕСТО'
+      end
+    end
+  end
   def put_trains_info
     puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
     train_number = gets.chomp
@@ -152,6 +179,22 @@ class Menu
   def put_stations_info
     @all_stations.detect { |x| puts "#{x.name} ПАССАЖИРСКИХ ПОЕЗДОВ #{x.train_type_list(:passenger)}
     ГРУЗОВЫХ ПОЕЗДОВ #{x.train_type_list(:cargo)}" }
+  end
+
+  def show_trains
+    trains_block = proc do |x, y, t, w|
+      puts "СТАНЦИЯ #{x}"
+      puts "#{y}  #{t}  #{w}" 
+    end
+    @station.show_trains(trains_block)
+  end
+
+  def show_wagons
+    puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
+    train_number = gets.chomp
+    find_train = Train.find(train_number)
+    wagons_block = proc { |x| print x }
+    @train.show_wagons(find_train,wagons_block)
   end
 
 end
