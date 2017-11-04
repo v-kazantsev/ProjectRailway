@@ -22,6 +22,10 @@ class Train
     @@all_trains[number] = self     
   end
 
+  def self.all 
+    @@all_trains
+  end
+
   def self.find(train_number)
     @@all_trains[train_number] 
   end
@@ -36,11 +40,12 @@ class Train
   end
 
   def add_wagon(wagon)
-    @wagons << wagon  if @speed.zero? && self.type == wagon.type 
+    self.wagons << wagon  if @speed.zero? 
   end
 
-  def remove_wagon(wagon)
-    @wagons.delete_at(0) if @speed.zero? && !wagons.empty?    
+  def remove_wagon(wagon_number)
+    self.wagons.delete_at(wagon_number) if @speed.zero?  
+    self.wagons.compact! 
   end
 
   def move_forward
@@ -63,24 +68,9 @@ class Train
     end
   end
 
-  def show_wagons(train_number,wagons_block)
-    for i in 0..wagons.size-1
-      each_number = i + 1
-      wagons_block.call('ВАГОН НОМЕР ' + each_number.to_s)
-      each_type = train_number.wagons[i].type
-      wagons_block.call(' ТИП: ' + each_type.to_s)
-      if train_number.type == :cargo
-        each_free_volume = train_number.wagons[i].volume_free
-        wagons_block.call(' СВОБОДНО: ' + each_free_volume.to_s)
-        each_taken_volume = train_number.wagons[i].volume_taken
-        wagons_block.call(' ЗАНЯТО : ' + each_taken_volume.to_s)
-      elsif train_number.type == :passenger
-        each_free_seats = train_number.wagons[i].seats_free
-        wagons_block.call(' СВОБОДНО: ' + each_free_seats.to_s)
-        each_taken_seats = train_number.wagons[i].seats_taken
-        wagons_block.call(' ЗАНЯТО : ' + each_taken_seats.to_s)
-      end
-      wagons_block.call("\n")
+  def all_wagons(train_number,wagons_block)
+    for i in 0..train_number.wagons.size-1
+      wagons_block.call(i, train_number.wagons[i])
     end
   end
 
