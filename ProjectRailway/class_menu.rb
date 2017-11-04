@@ -192,12 +192,12 @@ class Menu
     end
     Station.all.each do |k,s|
       puts "СТАНЦИЯ #{k}:"
-      @station.show_trains(s,trains_block)
+      s.all_trains &trains_block
     end
   end
 
   def show_wagons
-    wagons_block = proc do |i,w|
+    wagons_block = proc do |w,i|
       if w.type == :cargo
         puts "ВАГОН № #{i+1} ТИП #{w.type} ЗАНЯТО #{w.volume_taken} СВОБОДНО #{w.volume-w.volume_taken}"
       elsif w.type == :passenger
@@ -206,7 +206,7 @@ class Menu
     end
     Train.all.each do |k,t|
       puts "ПОЕЗД № #{k}:"
-      t.all_wagons(t, wagons_block)
+      t.all_wagons &wagons_block
     end
   end
 

@@ -68,10 +68,8 @@ class Train
     end
   end
 
-  def all_wagons(train_number,wagons_block)
-    for i in 0..train_number.wagons.size-1
-      wagons_block.call(i, train_number.wagons[i])
-    end
+  def all_wagons(&wagons_block)
+      wagons.each_with_index { |w,i| wagons_block.call(w,i) }
   end
 
 protected #ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ СУБКЛАССОВ

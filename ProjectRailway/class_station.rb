@@ -32,8 +32,8 @@ class Station
     trains.count { |t| t.type == type }
   end
 
-  def show_trains(station_name,trains_block)
-    station_name.trains.each { |s| trains_block.call(s) }
+  def all_trains(&trains_block)
+    trains.each { |s| trains_block.call(s) }
   end
   
   private
