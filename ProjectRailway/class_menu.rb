@@ -122,7 +122,12 @@ class Menu
   end
 
   def remove_wagon
-    @train.remove_wagon(@wagon)
+    puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
+    train_number = gets.chomp
+    find_train = Train.find(train_number)
+    puts "ВВЕДИТЕ НОМЕР ВАГОНА"
+    wagon_number = gets.to_i-1
+    find_train.remove_wagon(wagon_number)
   end
 
   def move_train_forward
@@ -145,7 +150,7 @@ class Menu
     find_train = Train.find(train_number)
     puts 'ВВЕДИТЕ НОМЕР ВАГОНА'
     wagon_number = gets.to_i - 1
-    if find_train.wagons[wagon_number].nil?
+    if find_train.wagons[wagon_number].nil? || wagon_number < 0
       puts 'ВАГОН ЕЩЕ НЕ СОЗДАН'
     else
       if find_train.type == :cargo
@@ -182,19 +187,27 @@ class Menu
   end
 
   def show_trains
-    trains_block = proc do |x, y, t, w|
-      puts "СТАНЦИЯ #{x}"
-      puts "#{y}  #{t}  #{w}" 
+    trains_block = proc do |t|
+      puts "ПОЕЗД № #{t.number}  ТИП #{t.type}  СОСТОИТ ИЗ #{t.wagons.size} ВАГОНОВ" 
     end
-    @station.show_trains(trains_block)
+    Station.all.each do |k,s|
+      puts "СТАНЦИЯ #{k}:"
+      @station.show_trains(s,trains_block)
+    end
   end
 
   def show_wagons
-    puts "ВВЕДИТЕ НОМЕР ПОЕЗДА"
-    train_number = gets.chomp
-    find_train = Train.find(train_number)
-    wagons_block = proc { |x| print x }
-    @train.show_wagons(find_train,wagons_block)
+    wagons_block = proc do |i,w|
+      if w.type == :cargo
+        puts "ВАГОН № #{i+1} ТИП #{w.type} ЗАНЯТО #{w.volume_taken} СВОБОДНО #{w.volume-w.volume_taken}"
+      elsif w.type == :passenger
+        puts "ВАГОН № #{i+1} ТИП #{w.type} ЗАНЯТО #{w.seats_taken} СВОБОДНО #{w.seats-w.seats_taken}"
+      end
+    end
+    Train.all.each do |k,t|
+      puts "ПОЕЗД № #{k}:"
+      t.all_wagons(t, wagons_block)
+    end
   end
 
 end
