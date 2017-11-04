@@ -32,23 +32,10 @@ class Station
     trains.count { |t| t.type == type }
   end
 
-  def show_trains(trains_block)
-    @@all_stations.each do |key,value|
-    station = key
-      unless value.trains.empty?
-        for i in 0..value.trains.size-1
-          train_number = value.trains[i].number
-          train_type = value.trains[i].type
-          train_wagons = value.trains[i].wagons.size
-          trains_block.call(station,train_number,train_type,train_wagons)
-        end
-      else 
-      trains_block.call(station, 'НА СТАНЦИИ ПОЕЗДОВ НЕТ')
-      end
-    end
+  def show_trains(station_name,trains_block)
+    station_name.trains.each { |s| trains_block.call(s) }
   end
   
-
   private
 
   def validate!
