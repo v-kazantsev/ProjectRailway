@@ -2,51 +2,50 @@ require_relative 'class_train'
 require_relative 'module'
 
 class Station
-
-  attr_accessor :trains 
+  attr_accessor :trains
   attr_reader :name
 
   @@all_stations = {}
-  NAME_FORMAT = /[a-zа-я]+/i 
-                                     
-  def initialize(name)       
+  NAME_FORMAT = /[a-zа-я]+/i
+
+  def initialize(name)
     @name = name
     validate!
     @trains = []
     @@all_stations[name] = self
   end
 
-  def self.all                                     
+  def self.all
     @@all_stations
-  end 
-
-  def train_in(train)       
-    trains << train          
   end
 
-  def train_out(train)     
-    trains.delete(train)     
+  def train_in(train)
+    trains << train
   end
 
-  def train_type_list(type)             
+  def train_out(train)
+    trains.delete(train)
+  end
+
+  def train_type_list(type)
     trains.count { |t| t.type == type }
   end
 
-  def all_trains(&trains_block)
-    trains.each { |s| trains_block.call(s) }
+  def all_trains
+    trains.each { |s| yield(s) }
   end
-  
+
   private
 
   def validate!
     raise 'НЕВЕРНОЕ ИМЯ СТАНЦИИ' unless NAME_FORMAT.match(name)
-  end  
+  end
 
   def valid?
     validate!
     true
-    rescue => e
-    puts "#{e.message}"
+  rescue RuntimeError => e
+    puts e.message.to_s
     false
-  end  
+  end
 end

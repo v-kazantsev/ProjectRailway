@@ -1,11 +1,10 @@
 require_relative 'class_wagon'
 
 class CargoWagon < Wagon
-  
-  attr_reader :volume 
+  attr_reader :volume
   attr_writer :volume_taken
 
-  def initialize(type,volume)
+  def initialize(type, volume)
     super(type)
     @volume = volume
     @volume_taken = 0
@@ -15,8 +14,5 @@ class CargoWagon < Wagon
     self.volume_taken += volume_to_load if volume - volume_taken > 0
   end
 
-  def volume_taken
-    @volume_taken
-  end
-
+  attr_reader :volume_taken
 end

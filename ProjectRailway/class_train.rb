@@ -3,78 +3,76 @@ require_relative 'class_wagon'
 require_relative 'module'
 
 class Train
-
   include Maker
-  
+
   attr_accessor :current_route, :current_station_index, :wagons
   attr_reader   :number
 
-  NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}$/i 
+  NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}$/i
   @@all_trains = {}
 
-  def initialize (number)
+  def initialize(number)
     @number = number
-    validate!           
-    @wagons = []                            
+    validate!
+    @wagons = []
     @speed = 0
-    @current_route = []                              
+    @current_route = []
     @current_station_index = 0
-    @@all_trains[number] = self     
+    @@all_trains[number] = self
   end
 
-  def self.all 
+  def self.all
     @@all_trains
   end
 
   def self.find(train_number)
-    @@all_trains[train_number] 
+    @@all_trains[train_number]
   end
 
-  def current_station                  
+  def current_station
     current_route.stations[current_station_index]
   end
 
-  def take_route(route)   
-    self.current_route = route  
-    current_station.train_in(self)  
+  def take_route(route)
+    self.current_route = route
+    current_station.train_in(self)
   end
 
   def add_wagon(wagon)
-    self.wagons << wagon  if @speed.zero? 
+    wagons << wagon if @speed.zero?
   end
 
   def remove_wagon(wagon_number)
-    self.wagons.delete_at(wagon_number) if @speed.zero?  
-    self.wagons.compact! 
+    wagons.delete_at(wagon_number) if @speed.zero?
+    wagons.compact!
   end
 
   def move_forward
-    unless current_station == current_route.stations[-1]
-      current_station.train_out(self)
-      speed_up
-      stop
-      self.current_station_index += 1
-      current_station.train_in(self)
-    end
+    return if current_station == current_route.stations[-1]
+    current_station.train_out(self)
+    speed_up
+    stop
+    self.current_station_index += 1
+    current_station.train_in(self)
   end
 
   def move_back
-    unless current_station == current_route.stations[0]
-      current_station.train_out(self)
-      speed_up
-      stop
-      self.current_station_index -= 1
-      current_station.train_in(self)
-    end
+    return if current_station == current_route.stations[0]
+    current_station.train_out(self)
+    speed_up
+    stop
+    self.current_station_index -= 1
+    current_station.train_in(self)
   end
 
-  def all_wagons(&wagons_block)
-      wagons.each_with_index { |w,i| wagons_block.call(w,i) }
+  def all_wagons
+    wagons.each_with_index { |w, i| yield(w, i) }
   end
 
-protected #ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ СУБКЛАССОВ
-          #ВСЕ ОСТАЛЬНЫЕ МЕТОДЫ ВЫЗЫВАЮТСЯ ИЗВНЕ МЕТОДА TRAIN И ЕГО СУБКЛАССОВ
-  
+  protected # ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ СУБКЛАССОВ
+
+  # ВСЕ ОСТАЛЬНЫЕ МЕТОДЫ ВЫЗЫВАЮТСЯ ИЗВНЕ МЕТОДА TRAIN И ЕГО СУБКЛАССОВ
+
   def speed_up
     @speed += 50
   end
@@ -84,33 +82,24 @@ protected #ТОЛЬКО ЭТИ МЕТОДЫ ВЫЗЫВАЮТСЯ ВНУТРИ С
   end
 
   def report_previous
-    current_route.stations[current_station_index-1]
+    current_route.stations[current_station_index - 1]
   end
 
   def report_next
-    current_route.stations[current_station_index+1]
+    current_route.stations[current_station_index + 1]
   end
 
-  private 
+  private
 
   def validate!
-    raise RuntimeError.new('НЕПРАВИЛЬНЫЙ ФОРМАТ НОМЕРА') unless NUMBER_FORMAT.match(number)
+    raise 'НЕПРАВИЛЬНЫЙ ФОРМАТ НОМЕРА' unless NUMBER_FORMAT.match(number)
   end
 
   def valid?
     validate!
     true
-    rescue => e
-    puts "#{e.message}"
+  rescue RuntimeError => e
+    puts e.message.to_s
     false
   end
 end
-
-
-
-
-
-
-
-  
-  
