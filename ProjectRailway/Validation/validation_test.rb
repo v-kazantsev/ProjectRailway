@@ -8,7 +8,21 @@ class Test
   validate :station, :type, Station
 end
 
-t = Test.new
-t.name = 'Msk'
-t.station = Station.new(t.name)
-puts t.valid? ? 'passed' : 'not_passed'
+class Test2
+  include Validation
+  attr_accessor :number, :train
+  validate :number, :format, /\A[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}\z/i
+  validate :train, :type, Train
+end
+
+s = Test.new
+s.name = 'Msk'
+s.station = Station.new(s.name)
+puts s.valid? ? 'test1 passed' : 'test1 not passed'
+
+t = Test2.new
+t.number = '12345'
+t.train = Train.new(t.number)
+puts t.valid? ? 'test2 passed' : 'test2 not passed'
+
+
