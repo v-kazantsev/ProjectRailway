@@ -1,5 +1,5 @@
-require_relative 'class_route'
-require_relative 'class_wagon'
+#require_relative 'class_route'
+#require_relative 'class_wagon'
 require_relative 'module'
 
 class Train

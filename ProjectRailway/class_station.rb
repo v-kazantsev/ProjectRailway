@@ -1,16 +1,20 @@
-require_relative 'class_train'
-require_relative 'module'
+#require_relative 'class_train'
+require_relative 'module_validation'
 
 class Station
+  include Validation
   attr_accessor :trains
   attr_reader :name
+  validate :name, :presence
+  validate :name, :type, String
+  validate :name, :format, /\A[a-zа-я]+\z/i
+
 
   @@all_stations = {}
-  NAME_FORMAT = /[a-zа-я]+/i
+  #NAME_FORMAT = /[a-zа-я]+/i
 
   def initialize(name)
     @name = name
-    validate!
     @trains = []
     @@all_stations[name] = self
   end
@@ -33,19 +37,5 @@ class Station
 
   def all_trains
     trains.each { |s| yield(s) }
-  end
-
-  private
-
-  def validate!
-    raise 'НЕВЕРНОЕ ИМЯ СТАНЦИИ' unless NAME_FORMAT.match(name)
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError => e
-    puts e.message.to_s
-    false
   end
 end

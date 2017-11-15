@@ -4,8 +4,10 @@ require_relative 'class_route'
 require_relative 'module'
 require_relative 'class_cargo_wagon'
 require_relative 'class_passenger_wagon'
+require_relative 'module_validation'
 
 class Menu
+  include Validation
   attr_reader :train_number, :station_name
   attr_accessor :all_stations
 
@@ -16,7 +18,11 @@ class Menu
   def create_station
     puts 'ВВЕДИТЕ ИМЯ СТАНЦИИ'
     @station_name = gets.chomp.upcase
-    @station = Station.new(station_name)
+    if Station.new(station_name).valid?
+      @station = Station.new(station_name) 
+    else
+      return
+    end
     @all_stations << @station
     puts "СТАНЦИЯ #{station_name} СОЗДАНА"
   end
@@ -36,25 +42,23 @@ class Menu
   end
 
   def create_cargo_train
-    begin
+    if Train.new(train_number).valid?
       @train = CargoTrain.new(train_number)
-      train_created = true
-    rescue RuntimeError => e
-      puts e.message.to_s
-      train_created = false
+    else
+      return
     end
+    train_created = true
     puts "ГРУЗОВОЙ ПОЕЗД #{train_number} СОЗДАН" if train_created
     @route_assigned = false
   end
 
   def create_passenger_train
-    begin
+    if Train.new(train_number).valid?
       @train = PassengerTrain.new(train_number)
-      train_created = true
-    rescue RuntimeError => e
-      puts e.message.to_s
-      train_created = false
+    else
+      return
     end
+    train_created = true
     puts "ПАССАЖИРСКИЙ ПОЕЗД #{train_number} СОЗДАН" if train_created
     @route_assigned = false
   end
@@ -70,7 +74,11 @@ class Menu
     puts 'ВВЕДИТЕ КОНЕЧНУЮ СТАНЦИЮ МАРШРУТА'
     finish = gets.chomp.upcase
     to = get_station_by_name(finish)
-    @route = Route.new(from, to)
+    if Route.new(from,to).valid?
+      @route = Route.new(from, to)
+    else
+      return
+    end
     @route_created = true
     puts "МАРШРУТ #{start} - #{finish} СОЗДАН"
   end

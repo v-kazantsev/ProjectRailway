@@ -1,19 +1,23 @@
 require_relative 'class_route'
 require_relative 'class_wagon'
 require_relative 'module'
+require_relative 'module_validation'
 
 class Train
   include Maker
+  include Validation
 
   attr_accessor :current_route, :current_station_index, :wagons
   attr_reader   :number
+  validate :number, :presence
+  validate :number, :type, String
+  validate :number, :format, /\A[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}\z/i
 
-  NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}$/i
+  #NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-zа-я0-9]{2}$/i
   @@all_trains = {}
 
   def initialize(number)
     @number = number
-    validate!
     @wagons = []
     @speed = 0
     @current_route = []
@@ -89,17 +93,4 @@ class Train
     current_route.stations[current_station_index + 1]
   end
 
-  private
-
-  def validate!
-    raise 'НЕПРАВИЛЬНЫЙ ФОРМАТ НОМЕРА' unless NUMBER_FORMAT.match(number)
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError => e
-    puts e.message.to_s
-    false
-  end
 end
