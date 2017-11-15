@@ -1,5 +1,5 @@
-require_relative 'class_station'
-require_relative 'class_train'
+#require_relative 'class_station'
+#require_relative 'class_train'
 require_relative 'module_validation'
 class Test
   include Validation

@@ -18,15 +18,14 @@ module Validation
 
     def valid?
       validate!
-      rescue RuntimeError => e
-        puts "#{e.message}"
-      return false
+      rescue RuntimeError
+      false
     end
 
     private
 
     def validate_presence(var,param)
-      raise RuntimeError, 'Value is nil' if instance_variable_get("@#{var}").nil?
+      raise RuntimeError, 'Value is nil' unless instance_variable_get("@#{var}")
     end
 
     def validate_type(var, param)
@@ -47,10 +46,3 @@ module Validation
     end
   end
 end
-# class Test
-#   include Validation
-#   attr_accessor :name, :price
-#   validate :name, :presence
-#   validate :name, :type, String
-#   validate :name, :format, /\w+/
-# end
